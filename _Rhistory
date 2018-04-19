@@ -1,0 +1,141 @@
+library()
+install.packages(c("GGally", "ggplot2"))
+install.packages("tidyverse")
+library(ggplot2)
+install.packages(ggplot2)
+install.packages("ggplot2")
+mean(1,2,3)
+mean(c(1,2,3))
+??diamonds
+ggplot(data = diamonds, aes(x = carat, y = price)) +
+geom_point()
+library(ggplot2)
+ggplot(data = diamonds, aes(x = carat, y = price)) +
+geom_point()
+ggplot(data = diamonds, aes(x = carat, y = price, color = cut)) +
+geom_point()
+ggplot(data = diamonds, aes(x = carat, y = price, color = cut)) +
+geom_point() +
+facet_grid(. ~ clarity)
+ggplot(data = diamonds, aes(x = carat, y = price, color = cut, size = color)) +
+geom_jitter()
+ggplot(data = diamonds, aes(x = carat, y = price, color = cut, size = color)) +
+geom_jitter()
+plot(data = diamonds, aes(x = carat, y = price, color = cut, size = color)) +
+geom_jitter()
+geom_point() +
+facet_grid(. ~ clarity)
+ggplot(data = diamonds, aes(x = carat, y = price, color = cut, size = color)) +
+geom_jitter()
+geom_point() +
+facet_grid(. ~ clarity)
+ggplot(data = diamonds, aes(x = carat, y = price, color = cut, size = color)) +
+geom_jitter() +
+geom_point() +
+facet_grid(. ~ clarity
+ggplot(data = diamonds, aes(x = carat, y = price, color = cut, size = color)) +
+geom_jitter() +
+geom_point() +
+facet_grid(. ~ clarity)
+ggplot(data = diamonds, aes(x = carat, y = log(price), color = cut, size = color)) +
+geom_jitter() +
+geom_point() +
+facet_grid(. ~ clarity)
+ggplot(data = diamonds, aes(x = carat, y = log(price), color = cut, size = color)) +
+geom_jitter() +
+geom_hex() +
+facet_grid(. ~ clarity)
+install.packages("hexbin")
+ggplot(data = diamonds, aes(x = carat, y = log(price), color = cut, size = color)) +
+geom_jitter() +
+geom_hex() +
+facet_grid(. ~ clarity)
+install.packages(lmtest)
+install.packages("lmtest")
+library(lmtest)
+model = lm(diamonds, price ~ carat + cut + color + clarity + x + y + z + depth + table)
+model = lm(data = diamonds, price ~ carat + cut + color + clarity + x + y + z + depth + table)
+summary(model)
+library(dplyr)
+library(memisc)
+library(haven)
+library(lmtest)
+library(ggplot2)
+library(ggfortify)
+df = as.data.frame(read_spss("BD final - estudantes.sav"))
+data = transmute(df, oportunidade = as.numeric(df$tri_oportunidade),
+pressao = as.numeric(df$losango_motivacao),
+racionalizacao = as.numeric(df$tri_dist_moral),
+fraudenctx = as.numeric(df$norma_contexto),
+fraudencop = as.numeric(df$norma_copiar),
+fraudenplg = as.numeric(df$norma_plagio),
+fraudeneud = as.numeric(df$norma_eu_desonesto),
+fraudenavg = rowMeans(data[4:7], na.rm = TRUE),
+fraudkfreq = rowMeans(df[34:50], na.rm = TRUE))
+setwd("~/Documents/Comportamento Organizacional")
+df = as.data.frame(read_spss("BD final - estudantes.sav"))
+data = transmute(df, oportunidade = as.numeric(df$tri_oportunidade),
+pressao = as.numeric(df$losango_motivacao),
+racionalizacao = as.numeric(df$tri_dist_moral),
+fraudenctx = as.numeric(df$norma_contexto),
+fraudencop = as.numeric(df$norma_copiar),
+fraudenplg = as.numeric(df$norma_plagio),
+fraudeneud = as.numeric(df$norma_eu_desonesto),
+fraudenavg = rowMeans(data[4:7], na.rm = TRUE),
+fraudkfreq = rowMeans(df[34:50], na.rm = TRUE))
+data = transmute(df, oportunidade = as.numeric(df$tri_oportunidade),
+pressao = as.numeric(df$losango_motivacao),
+racionalizacao = as.numeric(df$tri_dist_moral),
+fraudenctx = as.numeric(df$norma_contexto),
+fraudencop = as.numeric(df$norma_copiar),
+fraudenplg = as.numeric(df$norma_plagio),
+fraudeneud = as.numeric(df$norma_eu_desonesto),
+fraudenavg = rowMeans(data[4:7], na.rm = TRUE),
+fraudkfreq = rowMeans(df[34:50], na.rm = TRUE))
+data = transmute(df, oportunidade = as.numeric(df$tri_oportunidade),
+pressao = as.numeric(df$losango_motivacao),
+racionalizacao = as.numeric(df$tri_dist_moral),
+fraudenctx = as.numeric(df$norma_contexto),
+fraudencop = as.numeric(df$norma_copiar),
+fraudenplg = as.numeric(df$norma_plagio),
+fraudeneud = as.numeric(df$norma_eu_desonesto),
+fraudenavg = rowMeans(data[4:7], na.rm = TRUE),
+fraudkfreq = rowMeans(df[34:50], na.rm = TRUE))
+data = transmute(df, oportunidade = as.numeric(df$tri_oportunidade),
+pressao = as.numeric(df$losango_motivacao),
+racionalizacao = as.numeric(df$tri_dist_moral),
+fraudenctx = as.numeric(df$norma_contexto),
+fraudencop = as.numeric(df$norma_copiar),
+fraudenplg = as.numeric(df$norma_plagio),
+fraudeneud = as.numeric(df$norma_eu_desonesto),
+fraudenavg = rowMeans(data[4:7], na.rm = TRUE),
+fraudkfreq = rowMeans(df[34:50], na.rm = TRUE))
+View(df)
+data = transmute(df, oportunidade = as.numeric(df$tri_oportunidade),
+pressao = as.numeric(df$losango_motivacao),
+racionalizacao = as.numeric(df$tri_dist_moral),
+fraudenctx = as.numeric(df$norma_contexto),
+fraudencop = as.numeric(df$norma_copiar),
+fraudenplg = as.numeric(df$norma_plagio),
+fraudeneud = as.numeric(df$norma_eu_desonesto),
+fraudenavg = rowMeans(df[68:71], na.rm = TRUE),
+fraudkfreq = rowMeans(df[34:50], na.rm = TRUE))
+GGally::ggpairs(data)
+model11 = lm(data = data, fraudenctx ~ oportunidade + pressao + racionalizacao)
+model12 = lm(data = data, fraudencop ~ oportunidade + pressao + racionalizacao)
+model13 = lm(data = data, fraudenplg ~ oportunidade + pressao + racionalizacao)
+model14 = lm(data = data, fraudeneud ~ oportunidade + pressao + racionalizacao)
+model15 = lm(data = data, fraudenavg ~ oportunidade + pressao + racionalizacao)
+### Comparing Models
+AIC(model11, model12, model13, model14, model15)
+model21 = lm(data = data, fraudkfreq ~ oportunidade + pressao + racionalizacao)
+summary(model15)
+summary(model14)
+summary(model13)
+summary(model12)
+summary(model12)
+summary(model11)
+### Comparing Models
+AIC(model11, model12, model13, model14, model15)
+bptest(model15)
+bptest(model14)
