@@ -6,6 +6,11 @@ install.packages("GGally")
 install.packages("tidyr")
 install.packages("pander")
 install.packages("ANOVA")
+install.packages("ggpubr")
+install.packages("sandwich")
+install.packages("ggthemes")
+install.packages("Hmisc")
+install.packages("huxtable")
 
 library(dplyr)
 library(memisc)
@@ -15,79 +20,51 @@ library(ggplot2)
 library(ggfortify)
 library(pander)
 library(lme4)
-library(ANOVA)
+library(ggpubr)
+library(car)
+library(sandwich)
+library(ggthemes)
+library(Hmisc)
+library(huxtable)
 
 df = as.data.frame(read_spss("BD final - estudantes.sav"))
 
-# Base variables
-
-data = transmute(df, oportunidade = as.numeric(df$tri_oportunidade),
-                 pressao = as.numeric(df$losango_motivacao),
-                 racionalizacao = as.numeric(df$tri_dist_moral),
-                 fraudenctx = as.numeric(df$norma_contexto),
-                 fraudencop = as.numeric(df$norma_copiar),
-                 fraudenplg = as.numeric(df$norma_plagio),
-                 fraudeneud = as.numeric(df$norma_eu_desonesto),
-                 fraudenavg = rowMeans(df[68:71], na.rm = TRUE),
-                 fraudkfreq = rowMeans(df[34:50], na.rm = TRUE))
 
 
-GGally::ggpairs(data)
 # Models
 ## Fraude by the Norm
-### Norma Contexto
+datan = transmute(df, oportunidade = as.numeric(df$tri_oportunidade),
+                  pressao = as.numeric(df$losango_motivacao),
+                  racionalizacao = as.numeric(df$tri_dist_moral),
+                  fraudenctx = as.numeric(df$norma_contexto),
+                  fraudencop = as.numeric(df$norma_copiar),
+                  fraudenplg = as.numeric(df$norma_plagio),
+                  fraudeneud = as.numeric(df$norma_eu_desonesto),
+                  fraudenavg = rowMeans(df[68:71], na.rm = TRUE))
 
-model11 = lm(data = data, fraudenctx ~ oportunidade + pressao + racionalizacao) 
-summary(model11)
-autoplot(model11)
+### Norma Contexto
+modeln1 = lm(data = datan, fraudenctx ~ oportunidade + pressao + racionalizacao) 
 
 ### Norma Copiar
-
-model12 = lm(data = data, fraudencop ~ oportunidade + pressao + racionalizacao) 
-summary(model12)
+modeln2 = lm(data = datan, fraudencop ~ oportunidade + pressao + racionalizacao) 
 
 ### Norma Plágio
-
-model13 = lm(data = data, fraudenplg ~ oportunidade + pressao + racionalizacao) 
-summary(model13)
+modeln3 = lm(data = datan, fraudenplg ~ oportunidade + pressao + racionalizacao) 
 
 ### Norma Eu desonesto
-
-model14 = lm(data = data, fraudeneud ~ oportunidade + pressao + racionalizacao) 
-summary(model14)
+modeln4 = lm(data = datan, fraudeneud ~ oportunidade + pressao + racionalizacao) 
 
 ### Norma Avg
-
-model15 = lm(data = data, fraudenavg ~ oportunidade + pressao + racionalizacao) 
-summary(model15)
-autoplot(model15) + theme_bw()
-autoplot(prcomp(model15), scale = TRUE)
+modelnavg = lm(data = datan, fraudenavg ~ oportunidade + pressao + racionalizacao) 
 
 ### Comparing Models
 AIC(model11, model12, model13, model14, model15)
 
-## Fraud by Frequency
+BIC(model11, model12, model13, model14, model15)
 
-model21 = lm(data = data, fraudkfreq ~ oportunidade + pressao + racionalizacao)
-summary(model21)
+#### Best model - modelnavg
 
-# Tests
-# Multicollinearity - bptest, gqtest
-bptest(model11)
-bptest(model12)
-bptest(model13)
-bptest(model14)
-bptest(model15)
-
-gqtest(model13)
-gqtest(model15)
-
-# Heteroskedascitity - PCA?
-
-
-# Experimental - Explaining k frequency with k gravity assessement 
-# Create the data
-
+## Fraud by specific behaviours and the gravity assessement 
 datak = transmute(df, oportunidade = as.numeric(df$tri_oportunidade),
                   pressao = as.numeric(df$losango_motivacao),
                   racionalizacao = as.numeric(df$tri_dist_moral),
@@ -126,7 +103,7 @@ datak = transmute(df, oportunidade = as.numeric(df$tri_oportunidade),
                   kg16 = as.factor(df$k_especificos_2_28),
                   kgavg = as.factor(as.integer(rowMeans(df[51:67], na.rm = TRUE))))
 
-# Create models for each one
+## Models
 modelk1 = lm(data = datak, 
              kf1 ~ oportunidade + pressao + racionalizacao + kg1)
 
@@ -175,13 +152,13 @@ modelk15 = lm(data = datak,
 modelk16 = lm(data = datak, 
              kf16 ~ oportunidade + pressao + racionalizacao + kg16)
 
-#avg model
+# Average model
 modelkavg = lm(data = datak, 
                kfavg ~ oportunidade + pressao + racionalizacao + kgavg)
 summary(modelkavg)
 autoplot(modelkavg)
 
-# Comparing models
+## Comparing models
 AIC(modelk1, modelk2, modelk3, modelk4, modelk5, modelk6, modelk7, 
     modelk8, modelk9, modelk10, modelk11, modelk12, modelk13, modelk14, 
     modelk15, modelk16, modelkavg)
@@ -189,4 +166,64 @@ AIC(modelk1, modelk2, modelk3, modelk4, modelk5, modelk6, modelk7,
 BIC(modelk1, modelk2, modelk3, modelk4, modelk5, modelk6, modelk7, 
     modelk8, modelk9, modelk10, modelk11, modelk12, modelk13, modelk14, 
     modelk15, modelk16, modelkavg)
+
+### Best model - modelkavg
+# Final Models
+dataF = transmute(df, oportunidade = as.numeric(df$tri_oportunidade),
+                  pressao = as.numeric(df$losango_motivacao),
+                  racionalizacao = as.numeric(df$tri_dist_moral),
+                  fraudenavg = rowMeans(df[68:71], na.rm = TRUE),
+                  kgavg = as.factor(as.integer(rowMeans(df[51:67], na.rm = TRUE))),
+                  kfavg = rowMeans(df[34:50], na.rm = TRUE))
+
+ModelN = lm(data = dataF, fraudenavg ~ oportunidade + pressao + racionalizacao)
+
+ModelC = lm(data = dataF, kfavg ~ oportunidade + pressao + racionalizacao + kgavg)
+
+## Normality Tests
+### Shapiro-Wilk's
+shapiro.test(dataF$oportunidade)
+shapiro.test(dataF$pressao)
+shapiro.test(dataF$racionalizacao)
+shapiro.test(dataF$fraudenavg)
+shapiro.test(dataF$kgavg)
+shapiro.test(dataF$kfavg)
+
+#### Graphical confirmation
+ggqqplot(dataF$fraudenavg) + 
+  theme_gdocs() +
+  labs(title="QQPlot FraudeN")
+  
+ggqqplot(dataF$kgavg) + 
+  theme_gdocs() +
+  labs(title="QQPlot FraudeC")
+
+## Autocorrelation - No
+dwtest(ModelC)
+dwtest(ModelN)
+bgtest(ModelC)
+bgtest(ModelN)
+
+## Multicollinearity - No
+vif(ModelC)
+vif(ModelN)
+
+## Heteroscedasticity - No
+bptest(ModelC)
+bptest(ModelN)
+gqtest(ModelC)
+gqtest(ModelN)
+
+ncvTest(ModelC)
+
+### Graphical Confirmation
+autoplot(ModelC)
+
+# Analysing the results
+summary(ModelN)
+summary(ModelC)
+
+
+
+
 
