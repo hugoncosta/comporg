@@ -223,7 +223,14 @@ autoplot(ModelC)
 summary(ModelN)
 summary(ModelC)
 
+# Sensitivity Analysis
+ModelNS = lm(data = dataF, fraudenavg ~ oportunidade + 
+               pressao + racionalizacao + df$idade + 
+               df$socioeconomico + df$estudos_pai)
+summary(ModelNS)
 
-
-
+ModelCS = lm(data = dataF, kfavg ~ oportunidade + 
+               pressao + racionalizacao + kgavg + df$idade +
+               as.factor(df$socioeconomico)) 
+summary(ModelCS)
 
