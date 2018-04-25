@@ -1,8 +1,11 @@
 ---
 title: "Result Presentation"
-output: word_document
 lang: en-EN
-editor_options: 
+output:
+  word_document: default
+  pdf_document:
+    keep_tex: yes
+editor_options:
   chunk_output_type: console
 ---
 
@@ -38,6 +41,15 @@ ModelC = lm(data = dataF, kfavg ~ oportunidade + pressao + racionalizacao + kgav
 ```
 
 ```{r, results='asis', warning=FALSE}
+#1st Graph
+ggplot(ModelC) + stat_qq(aes(sample = ModelC$residuals), color = "black", alpha = 0.2) + geom_abline(intercept = mean(ModelC$residuals), slope = sd(ModelC$residuals), color = "red") + theme_calc()
+
+#2nd Graph
+ggplot(ModelC, aes(x = .resid, y = ..density..)) + geom_histogram(bins = 15, color = "white", fill = "black") + theme_calc()
+
+#3rd Graph
+ggplot(ModelN, aes(x = .fitted, y = .resid)) + geom_point(color = "black", alpha = 0.3) + stat_smooth(color = "red") + theme_calc()
+
 
 reg_table <- huxreg(ModelN, ModelC, statistics = c(N = "nobs", R2 = "r.squared", R2Adj = "adj.r.squared", 
   "AIC"))

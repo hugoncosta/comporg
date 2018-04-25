@@ -233,4 +233,3 @@ ModelCS = lm(data = dataF, kfavg ~ oportunidade +
                pressao + racionalizacao + kgavg + df$idade +
                as.factor(df$socioeconomico)) 
 summary(ModelCS)
-
